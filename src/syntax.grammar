@@ -1,26 +1,136 @@
-@top Program { expression* }
+@top ConfigFile { (Body | Object)? }
 
-@skip { space | LineComment }
+@skip { space }
 
-expression {
-  Identifier |
-  String |
-  Boolean |
-  Application { "(" expression* ")" }
+Body { (Attribute | Block)+ }
+
+Attribute { Identifier "=" Expression }
+
+Block { Identifier (Identifier | StringLit)* "{" Body? "}" }
+
+Object { "{" _object_elems? "}" }
+_object_elems { ObjectElem (","? ObjectElem)* ","? }
+ObjectElem { !objectElem Expression ("=" | ":") Expression }
+
+@precedence {
+    unaryOperation @left
+    binary_mult @left
+    binary_add @left
+    binary_ord @left
+    binary_comp @left
+    binary_and @left
+    binary_or @left
+
+    // ?
+    attrSplat @right
+    fullSplat @right
+
+    variableExpr @right
+    objectElem
+    expression @right,
+    conditional @left
+    functionArguments @right
 }
+
+Expression {
+    !expression (_expr_term | Conditional)
+}
+
+_expr_term {
+    LiteralValue |
+    // TemplateExpr |
+    CollectionValue |
+    VariableExpr |
+    FunctionCall |
+    ForExpr |
+    Operation |
+    _expr_term Index |
+    _expr_term GetAttr |
+    _expr_term Splat |
+    "(" Expression ")"
+}
+
+LiteralValue { NumericLit | BoolLit | NullLit | StringLit }
+
+// TODO
+// TemplateExpr { StringLit }
+
+CollectionValue { Tuple | Object }
+
+Tuple { "[" _tuple_elems? "]" }
+_tuple_elems { Expression ("," Expression)* ","? }
+
+VariableExpr { !variableExpr Identifier}
+
+FunctionCall { Identifier "(" FunctionArguments? ")" }
+FunctionArguments { !functionArguments Expression ("," Expression)* ("," | Ellipsis)? }
+
+Conditional { !conditional Expression "?" Expression ":" Expression }
+
+Operation { UnaryOperation | BinaryOperation }
+UnaryOperation { !unaryOperation ("-" | "!") _expr_term }
+BinaryOperation {
+    !binary_mult _expr_term ("*" | "/" | "%") _expr_term |
+    !binary_add  _expr_term ("+" | "-") _expr_term |
+    !binary_ord  _expr_term (">" | ">=" | "<" | "<=") _expr_term |
+    !binary_comp _expr_term ("==" | "!=") _expr_term |
+    !binary_and  _expr_term "&&" _expr_term |
+    !binary_or   _expr_term "||" _expr_term
+}
+
+ForExpr { ForTupleExpr | ForObjectExpr }
+ForTupleExpr {
+    "["
+    ForIntro
+    Expression
+    "=>"
+    Expression
+    Ellipsis?
+    ForCond?
+    "]"
+}
+ForObjectExpr {
+    "{"
+    ForIntro
+    Expression
+    "=>"
+    Expression
+    Ellipsis?
+    ForCond?
+    "}"
+}
+ForIntro { "for" Identifier ("," Identifier)? "in" Expression ":" }
+ForCond { "if" Expression }
+
+Index { NewIndex | LegacyIndex }
+NewIndex { "[" Expression "]" }
+
+GetAttr { "." Identifier}
+
+Splat { AttrSplat | FullSplat }
+AttrSplat { !attrSplat ".*" (GetAttr | Index)*}
+FullSplat { !fullSplat "[*]" (GetAttr | Index)*}
 
 @tokens {
-  Identifier { $[a-zA-Z_\-0-9]+ }
+    space { @whitespace+ }
 
-  String { '"' (!["\\] | "\\" _)* '"' }
+    NumericLit {
+        @digit+ ("." @digit+ ($[eE]$[+-]? @digit+)?)? |
+        "0x" (@digit | $[a-fA-F])+
+    }
+    BoolLit { "true" | "false" }
+    NullLit { "null" }
 
-  Boolean { "#t" | "#f" }
+    Identifier { $[a-zA-Z_] $[a-zA-Z_\-0-9]* }
 
-  LineComment { ";" ![\n]* }
 
-  space { $[ \t\n\r]+ }
+    // TODO
+    StringLit { '"' (!["\\] | "\\" _)* '"' }
 
-  "(" ")"
+    Ellipsis { "..." }
+    LegacyIndex { "." @digit+ }
+
+    @precedence {
+        NullLit, BoolLit, NumericLit, "for", "in", LegacyIndex, ".", Identifier
+    }
 }
-
-@detectDelim

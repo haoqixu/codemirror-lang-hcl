@@ -1,41 +1,26 @@
-# Booleans
-
-#t
-#f
+# Empty file
 
 ==>
 
-Program(Boolean, Boolean)
+ConfigFile()
 
-# Identifiers
+# Single attribute
 
-one
-Two_Three
-
-==>
-
-Program(Identifier, Identifier)
-
-# Strings
-
-"hello"
-"one\"\\two"
+one = two
 
 ==>
 
-Program(String, String)
+ConfigFile(Body(Attribute(Identifier, Expression(VariableExpr(Identifier)))))
 
-# Applications
+# Attributes
 
-(begin
-  (when #t
-    (print (concat "hello" " " "world")))
-  (print "DONE"))
+one = two
+type = string
+key = val
 
 ==>
 
-Program(Application(
-  Identifier,
-  Application(Identifier, Boolean, Application(
-    Identifier, Application(Identifier, String, String, String)))
-  Application(Identifier, String)))
+ConfigFile(Body(
+        Attribute(Identifier, Expression(VariableExpr(Identifier))),
+        Attribute(Identifier, Expression(VariableExpr(Identifier))),
+        Attribute(Identifier, Expression(VariableExpr(Identifier)))))

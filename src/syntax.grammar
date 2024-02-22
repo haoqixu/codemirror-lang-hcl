@@ -1,6 +1,7 @@
 @top ConfigFile { (Body | Object)? }
+@detectDelim
 
-@skip { space }
+@skip { space Comment }
 
 Body { (Attribute | Block)+ }
 
@@ -99,7 +100,14 @@ ForObjectExpr {
     ForCond?
     "}"
 }
-ForIntro { "for" Identifier ("," Identifier)? "in" Expression ":" }
+ForIntro {
+    @specialize<Identifier, "for">
+    Identifier
+    ("," Identifier)?
+    @specialize<Identifier, "in">
+    Expression
+    ":"
+}
 ForCond { "if" Expression }
 
 Index { NewIndex | LegacyIndex }
@@ -110,6 +118,8 @@ GetAttr { "." Identifier}
 Splat { AttrSplat | FullSplat }
 AttrSplat { !attrSplat ".*" (GetAttr | Index)*}
 FullSplat { !fullSplat "[*]" (GetAttr | Index)*}
+
+Comment { LineComment | BlockComment }
 
 @tokens {
     space { @whitespace+ }
@@ -131,6 +141,16 @@ FullSplat { !fullSplat "[*]" (GetAttr | Index)*}
     LegacyIndex { "." @digit+ }
 
     @precedence {
-        NullLit, BoolLit, NumericLit, "for", "in", LegacyIndex, ".", Identifier
+        NullLit, BoolLit, NumericLit, LegacyIndex, ".", Identifier
+    }
+
+    LineComment {
+        "#" ![\n]* |
+        "//" ![\n]*
+    }
+
+    // https://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
+    BlockComment {
+        "/*" ![*]* "*"+ (![*/] ![*]* "*"+ )* "/"
     }
 }

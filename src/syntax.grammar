@@ -1,7 +1,7 @@
 @top ConfigFile { (Body | Object)? }
 @detectDelim
 
-@skip { space Comment }
+@skip { space | Comment }
 
 Body { (Attribute | Block)+ }
 
@@ -141,7 +141,9 @@ Comment { LineComment | BlockComment }
     LegacyIndex { "." @digit+ }
 
     @precedence {
-        NullLit, BoolLit, NumericLit, LegacyIndex, ".", Identifier
+        NullLit, BoolLit, NumericLit, LegacyIndex, ".", Identifier,
+
+        LineComment, "/"
     }
 
     LineComment {

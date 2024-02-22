@@ -1,21 +1,11 @@
-# CodeMirror 6 language package template
+# codemirror-lang-hcl
 
-This is an example repository containing a minimal [CodeMirror](https://codemirror.net/6/) language support package. The idea is to clone it, rename it, and edit it to create support for a new language.
+[![NPM Version](https://img.shields.io/npm/v/codemirror-lang-hcl)](https://www.npmjs.com/package/codemirror-lang-hcl)
 
-Things you'll need to do (see the [language support example](https://codemirror.net/6/examples/lang-package/) for a more detailed tutorial):
+This package implements [HCL](https://github.com/hashicorp/hcl) language support for the [CodeMirror](https://codemirror.net/6/) code editor.  
 
- * `git grep EXAMPLE` and replace all instances with your language name.
+The [lezer](https://lezer.codemirror.net/) grammar is ported from [tree-sitter-hcl](https://github.com/tree-sitter-grammars/tree-sitter-hcl).
 
- * Rewrite the grammar in `src/syntax.grammar` to cover your language. See the [Lezer system guide](https://lezer.codemirror.net/docs/guide/#writing-a-grammar) for information on this file format.
+## Status
 
- * Adjust the metadata in `src/index.ts` to work with your new grammar.
-
- * Adjust the grammar tests in `test/cases.txt`.
-
- * Build (`npm run prepare`) and test (`npm test`).
-
- * Rewrite this readme file.
-
- * Optionally add a license.
-
- * Publish. Put your package on npm under a name like `codemirror-lang-EXAMPLE`.
+this repo is currently under development and not fully implemented yet.

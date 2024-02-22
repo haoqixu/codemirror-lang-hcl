@@ -13,10 +13,16 @@ export const hclLanguage = LRLanguage.define({
       }),
       styleTags({
         Identifier: t.variableName,
-        Boolean: t.bool,
-        String: t.string,
+        BoolLit: t.bool,
+        StringLit: t.string,
+        NumericLit: t.number,
+        NullLit: t.null,
+        Comment: t.comment,
         LineComment: t.lineComment,
-        "( )": t.paren
+        BlockComment: t.blockComment,
+        "( )": t.paren,
+        "{ }": t.bracket,
+        "[ ]": t.squareBracket,
       })
     ]
   }),

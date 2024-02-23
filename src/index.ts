@@ -12,7 +12,12 @@ export const hclLanguage = LRLanguage.define({
         Application: foldInside
       }),
       styleTags({
-        Identifier: t.variableName,
+        "for in if": t.controlKeyword,
+        "Attribute/Identifier": t.attributeName,
+        "Attribute/Expression": t.attributeValue,
+        "Block/Identifier": t.typeName,
+        "VariableExpr/Identifier": t.variableName,
+        Identifier: t.name,
         BoolLit: t.bool,
         StringLit: t.string,
         NumericLit: t.number,
@@ -23,7 +28,7 @@ export const hclLanguage = LRLanguage.define({
         "( )": t.paren,
         "{ }": t.bracket,
         "[ ]": t.squareBracket,
-      })
+      }),
     ]
   }),
   languageData: {

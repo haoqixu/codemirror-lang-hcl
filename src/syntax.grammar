@@ -80,16 +80,7 @@ BinaryOperation {
 }
 
 ForExpr { ForTupleExpr | ForObjectExpr }
-ForTupleExpr {
-    "["
-    ForIntro
-    Expression
-    "=>"
-    Expression
-    Ellipsis?
-    ForCond?
-    "]"
-}
+ForTupleExpr { "[" ForIntro Expression ForCond? "]" }
 ForObjectExpr {
     "{"
     ForIntro

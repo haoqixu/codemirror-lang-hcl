@@ -1,0 +1,170 @@
+# for expr
+
+for1 = { for i, v in ["a", "a", "b"] : v => i... }
+// for2 = [ for k, v in x : "${k}-${v}" ]
+for3 = { for k, v in x: k => v if k > 100 }
+for4 = [ for v in x : v ]
+for5 = { for v in x : v => v }
+for6 = [ for v in x : v if v < 3 ]
+
+==>
+
+ConfigFile(Body(
+Attribute(
+  Identifier
+  Expression(
+    ForExpr(
+      ForObjectExpr(
+        ForIntro(
+          for
+          Identifier
+          Identifier
+          in
+          Expression(
+            CollectionValue(Tuple(
+                Expression(LiteralValue(StringLit))
+                Expression(LiteralValue(StringLit))
+                Expression(LiteralValue(StringLit))
+              )
+            )
+          )
+        )
+        Expression(VariableExpr(Identifier))
+        Expression(VariableExpr(Identifier))
+        Ellipsis
+      )
+    )
+  )
+),
+Comment(LineComment),
+Attribute(
+  Identifier
+  Expression (
+    ForExpr (
+      ForObjectExpr (
+        ForIntro (
+          for
+          Identifier
+          Identifier
+          in
+          Expression (
+            VariableExpr (
+                Identifier
+            )
+          )
+        )
+        Expression (
+          VariableExpr (
+            Identifier
+          )
+        )
+        Expression (
+          VariableExpr (
+            Identifier
+          )
+        )
+        ForCond (
+          if
+          Expression (
+            Operation (
+              BinaryOperation (
+                VariableExpr (
+                  Identifier
+                )
+                LiteralValue (
+                    NumericLit
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+),
+Attribute(
+  Identifier
+  Expression (
+    ForExpr (
+      ForTupleExpr (
+        ForIntro (
+          for
+          Identifier
+          in
+          Expression (
+            VariableExpr (
+                Identifier
+            )
+          )
+        )
+        Expression (
+          VariableExpr (
+            Identifier
+          )
+        )
+      )
+    )
+  )
+),
+Attribute(
+  Identifier
+  Expression (
+    ForExpr (
+      ForObjectExpr (
+        ForIntro (
+          for
+          Identifier
+          in
+          Expression (
+            VariableExpr (
+                Identifier
+            )
+          )
+        )
+        Expression (
+          VariableExpr (
+            Identifier
+          )
+        )
+        Expression (
+          VariableExpr (
+            Identifier
+          )
+        )
+      )
+    )
+  )
+),
+
+Attribute(
+  Identifier
+  Expression (
+    ForExpr (
+      ForTupleExpr (
+        ForIntro (
+          for
+          Identifier
+          in
+          Expression(VariableExpr(Identifier))
+        )
+        Expression(VariableExpr(Identifier))
+        ForCond (
+          if
+          Expression (
+            Operation (
+              BinaryOperation (
+                VariableExpr (
+                  Identifier
+                )
+                LiteralValue (
+                    NumericLit
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+),
+))

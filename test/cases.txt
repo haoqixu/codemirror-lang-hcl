@@ -62,3 +62,58 @@ ConfigFile(Body(
         Attribute(Identifier, Expression(LiteralValue(BoolLit(false)))),
         Attribute(Identifier, Expression(LiteralValue(BoolLit(false)))),
         Attribute(Identifier, Expression(LiteralValue(BoolLit(false))))))
+
+# binary operators
+
+a = 1 + 2 + 3 - 4
+b = 1 + (2 + 3) - 4
+c = 1 + (2 + (3 - 4))
+a = 1 + 2 * 3 - 4
+b = 1 + (2 + 3) / 4
+c = 1 + 2 / (3 - 4)
+
+==>
+
+ConfigFile(Body(
+            Attribute(Identifier,Expression
+                (Operation(BinaryOperation
+                           (Operation(BinaryOperation
+                                      (Operation(BinaryOperation(
+                                          LiteralValue(NumericLit),
+                                          LiteralValue(NumericLit)
+                                      )),
+                                      LiteralValue(NumericLit))),
+                            LiteralValue(NumericLit))))),
+            Attribute(Identifier,Expression
+                (Operation(BinaryOperation
+                           (Operation(BinaryOperation(
+                                LiteralValue(NumericLit),
+                                Expression(Operation(BinaryOperation(LiteralValue(NumericLit),LiteralValue(NumericLit)))))),
+                                LiteralValue(NumericLit))))),
+            Attribute(Identifier,Expression
+                (Operation(BinaryOperation(
+                    LiteralValue(NumericLit),
+                    Expression(Operation(
+                        BinaryOperation(
+                            LiteralValue(NumericLit),
+                            Expression(Operation(BinaryOperation(LiteralValue(NumericLit),LiteralValue(NumericLit))))))))))),
+            Attribute(Identifier,Expression
+                (Operation(BinaryOperation
+                           (Operation(BinaryOperation(
+                               LiteralValue(NumericLit),
+                               Operation(BinaryOperation(LiteralValue(NumericLit),LiteralValue(NumericLit)))
+                           )),
+                           LiteralValue(NumericLit))))),
+            Attribute(Identifier,Expression
+                (Operation(BinaryOperation(
+                           LiteralValue(NumericLit),
+                           Operation(BinaryOperation(
+                                   Expression(Operation(BinaryOperation(LiteralValue(NumericLit),LiteralValue(NumericLit)))),
+                                   LiteralValue(NumericLit),
+                                   )))))),
+            Attribute(Identifier,Expression
+                    (Operation(BinaryOperation(
+                       LiteralValue(NumericLit),
+                       Operation(BinaryOperation(
+                               LiteralValue(NumericLit),
+                               Expression(Operation(BinaryOperation(LiteralValue(NumericLit),LiteralValue(NumericLit))))))))))))

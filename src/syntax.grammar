@@ -71,12 +71,12 @@ Conditional { !conditional Expression "?" Expression ":" Expression }
 Operation { UnaryOperation | BinaryOperation }
 UnaryOperation { !unaryOperation ("-" | "!") _expr_term }
 BinaryOperation {
-    !binary_mult _expr_term ("*" | "/" | "%") _expr_term |
-    !binary_add  _expr_term ("+" | "-") _expr_term |
-    !binary_ord  _expr_term (">" | ">=" | "<" | "<=") _expr_term |
-    !binary_comp _expr_term ("==" | "!=") _expr_term |
-    !binary_and  _expr_term "&&" _expr_term |
-    !binary_or   _expr_term "||" _expr_term
+    _expr_term !binary_mult ("*" | "/" | "%") _expr_term |
+    _expr_term !binary_add  ("+" | "-") _expr_term |
+    _expr_term !binary_ord  (">" | ">=" | "<" | "<=") _expr_term |
+    _expr_term !binary_comp ("==" | "!=") _expr_term |
+    _expr_term !binary_and  "&&" _expr_term |
+    _expr_term !binary_or   "||" _expr_term
 }
 
 ForExpr { ForTupleExpr | ForObjectExpr }

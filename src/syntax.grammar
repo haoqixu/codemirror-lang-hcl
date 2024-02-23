@@ -101,14 +101,14 @@ ForObjectExpr {
     "}"
 }
 ForIntro {
-    @specialize<Identifier, "for">
+    kw<"for">
     Identifier
     ("," Identifier)?
-    @specialize<Identifier, "in">
+    kw<"in">
     Expression
     ":"
 }
-ForCond { "if" Expression }
+ForCond { kw<"if"> Expression }
 
 Index { NewIndex | LegacyIndex }
 NewIndex { "[" Expression "]" }

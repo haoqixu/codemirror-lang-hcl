@@ -24,3 +24,35 @@ ConfigFile(Body(
         Attribute(Identifier, Expression(VariableExpr(Identifier))),
         Attribute(Identifier, Expression(VariableExpr(Identifier))),
         Attribute(Identifier, Expression(VariableExpr(Identifier)))))
+
+# Literal null
+
+a = null
+null1 = null
+null2 = null
+
+==>
+
+ConfigFile(Body(
+        Attribute(Identifier, Expression(LiteralValue(NullLit(null)))),
+        Attribute(Identifier, Expression(LiteralValue(NullLit(null)))),
+        Attribute(Identifier, Expression(LiteralValue(NullLit(null))))))
+
+# Literal boolean
+
+a = true
+true1 = true
+trueeee = true
+b = false
+false1 = false
+falseeee = false
+
+==>
+
+ConfigFile(Body(
+        Attribute(Identifier, Expression(LiteralValue(BoolLit(true)))),
+        Attribute(Identifier, Expression(LiteralValue(BoolLit(true)))),
+        Attribute(Identifier, Expression(LiteralValue(BoolLit(true)))),
+        Attribute(Identifier, Expression(LiteralValue(BoolLit(false)))),
+        Attribute(Identifier, Expression(LiteralValue(BoolLit(false)))),
+        Attribute(Identifier, Expression(LiteralValue(BoolLit(false))))))

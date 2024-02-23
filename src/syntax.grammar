@@ -112,8 +112,8 @@ FullSplat { !fullSplat "[*]" (GetAttr | Index)*}
 
 Comment { LineComment | BlockComment }
 
-BoolLit { kw<"true"> | kw<"false"> }
-NullLit { kw<"null"> }
+BoolLit[@dynamicPrecedence=1] { @extend[@name=true]<Identifier, "true"> | @extend[@name=false]<Identifier, "false"> }
+NullLit[@dynamicPrecedence=1] { @extend[@name=null]<Identifier, "null"> }
 
 kw<word> { @specialize[@name={word}]<Identifier, word>}
 

@@ -30,10 +30,12 @@ ConfigFile(Body(
 a = null
 null1 = null
 null2 = null
+null = null
 
 ==>
 
 ConfigFile(Body(
+        Attribute(Identifier, Expression(LiteralValue(NullLit(null)))),
         Attribute(Identifier, Expression(LiteralValue(NullLit(null)))),
         Attribute(Identifier, Expression(LiteralValue(NullLit(null)))),
         Attribute(Identifier, Expression(LiteralValue(NullLit(null))))))
@@ -43,9 +45,11 @@ ConfigFile(Body(
 a = true
 true1 = true
 trueeee = true
+true = true
 b = false
 false1 = false
 falseeee = false
+false = false
 
 ==>
 
@@ -53,6 +57,8 @@ ConfigFile(Body(
         Attribute(Identifier, Expression(LiteralValue(BoolLit(true)))),
         Attribute(Identifier, Expression(LiteralValue(BoolLit(true)))),
         Attribute(Identifier, Expression(LiteralValue(BoolLit(true)))),
+        Attribute(Identifier, Expression(LiteralValue(BoolLit(true)))),
+        Attribute(Identifier, Expression(LiteralValue(BoolLit(false)))),
         Attribute(Identifier, Expression(LiteralValue(BoolLit(false)))),
         Attribute(Identifier, Expression(LiteralValue(BoolLit(false)))),
         Attribute(Identifier, Expression(LiteralValue(BoolLit(false))))))

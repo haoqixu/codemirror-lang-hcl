@@ -28,9 +28,13 @@ ObjectElem { !objectElem Expression ("=" | ":") Expression }
 
     variableExpr @right
     objectElem
-    expression @right,
+    expression @right
     conditional @left
     functionArguments @right
+
+    templateLiteral @right
+
+    stringLit, quotedTemplate
 }
 
 Expression {
@@ -39,7 +43,7 @@ Expression {
 
 _expr_term {
     LiteralValue |
-    // TemplateExpr |
+    TemplateExpr |
     CollectionValue |
     VariableExpr |
     FunctionCall |
@@ -53,8 +57,101 @@ _expr_term {
 
 LiteralValue { NumericLit | BoolLit | NullLit | StringLit }
 
-// TODO
-// TemplateExpr { StringLit }
+@external tokens scanQuotedTemplateStart from "./tokens.js" { QuotedTemplateStart }
+@external tokens scanQuotedTemplateEnd from "./tokens.js" { QuotedTemplateEnd }
+@external tokens scanTemplateInterpolationStart from "./tokens.js" { TemplateInterpolationStart }
+@external tokens scanTemplateInterpolationEnd from "./tokens.js" { TemplateInterpolationEnd }
+@external tokens scanTemplateDirectiveStart from "./tokens.js" { TemplateDirectiveStart }
+@external tokens scanTemplateDirectiveEnd from "./tokens.js" { TemplateDirectiveEnd }
+@external tokens scanHeredocIdentifier from "./tokens.js" { HeredocIdentifier }
+@external tokens scanTemplateLiteralChunk from "./tokens.js" { templateLiteralChunk }
+
+@context trackTemplate from "./tokens.js"
+
+TemplateExpr { QuotedTemplate | HeredocTemplate }
+
+QuotedTemplate {
+    QuotedTemplateStart
+    template?
+    QuotedTemplateEnd
+}
+
+HeredocTemplate {
+    HeredocStart
+    HeredocIdentifier
+    template?
+    HeredocIdentifier
+}
+HeredocStart { "<<" | "<<-" }
+
+template {
+    !quotedTemplate 
+    (
+     TemplateInterpolation |
+     TemplateDirective |
+     TemplateLiteral
+    )+
+}
+
+TemplateLiteral { !templateLiteral templateLiteralChunk+ }
+TemplateInterpolation {
+  TemplateInterpolationStart
+  StripMarker?
+  Expression?
+  StripMarker?
+  TemplateInterpolationEnd
+}
+TemplateDirective { TemplateFor | TemplateIf }
+TemplateFor { TemplateForStart template? TemplateForEnd }
+TemplateForStart {
+      TemplateDirectiveStart
+      StripMarker
+      kw<"for">
+      Identifier
+      ("," Identifier)?
+      kw<"in">
+      Expression
+      StripMarker?
+      TemplateDirectiveEnd
+}
+TemplateForEnd {
+      TemplateDirectiveStart
+      StripMarker?
+      kw<"endfor">
+      StripMarker?
+      TemplateDirectiveEnd
+}
+
+TemplateIf {
+      TemplateIfIntro
+      template?
+      (TemplateElseIntro template?)?
+      TemplateIfEnd
+}
+TemplateIfIntro {
+      TemplateDirectiveStart
+      StripMarker?
+      kw<"if">
+      Expression
+      StripMarker?
+      TemplateDirectiveEnd
+}
+TemplateElseIntro {
+    TemplateDirectiveStart
+    StripMarker?
+    kw<"else">
+    StripMarker?
+    TemplateDirectiveEnd
+}
+TemplateIfEnd {
+      TemplateDirectiveStart
+      StripMarker?
+      kw<"endif">
+      StripMarker?
+      TemplateDirectiveEnd
+}
+
+StringLit { QuotedTemplateStart TemplateLiteral !stringLit QuotedTemplateEnd }
 
 CollectionValue { Tuple | Object }
 
@@ -127,11 +224,10 @@ kw<word> { @specialize[@name={word}]<Identifier, word>}
 
     Identifier { $[a-zA-Z_] $[a-zA-Z_\-0-9]* }
 
-    // TODO
-    StringLit { '"' (!["\\] | "\\" _)* '"' }
-
     Ellipsis { "..." }
     LegacyIndex { "." @digit+ }
+
+    StripMarker { "~" }
 
     @precedence {
         NumericLit, LegacyIndex, ".", Identifier,

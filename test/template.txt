@@ -1,0 +1,19 @@
+# Template
+
+a = "${hello}"
+
+==>
+
+ConfigFile(
+        Body(
+            Attribute(
+                Identifier
+                Expression(
+                    TemplateExpr(
+                        QuotedTemplate(
+                            QuotedTemplateStart
+                            TemplateInterpolation(
+                                TemplateInterpolationStart
+                                Expression(VariableExpr(Identifier))
+                                TemplateInterpolationEnd)
+                            QuotedTemplateEnd))))))

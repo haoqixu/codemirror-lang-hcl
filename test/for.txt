@@ -1,7 +1,7 @@
 # for expr
 
 for1 = { for i, v in ["a", "a", "b"] : v => i... }
-// for2 = [ for k, v in x : "${k}-${v}" ]
+for2 = [ for k, v in x : "${k}-${v}" ]
 for3 = { for k, v in x: k => v if k > 100 }
 for4 = [ for v in x : v ]
 for5 = { for v in x : v => v }
@@ -22,9 +22,9 @@ Attribute(
           in
           Expression(
             CollectionValue(Tuple(
-                Expression(LiteralValue(StringLit))
-                Expression(LiteralValue(StringLit))
-                Expression(LiteralValue(StringLit))
+                Expression(LiteralValue(StringLit(QuotedTemplateStart,TemplateLiteral,QuotedTemplateEnd)))
+                Expression(LiteralValue(StringLit(QuotedTemplateStart,TemplateLiteral,QuotedTemplateEnd)))
+                Expression(LiteralValue(StringLit(QuotedTemplateStart,TemplateLiteral,QuotedTemplateEnd)))
               )
             )
           )
@@ -36,7 +36,34 @@ Attribute(
     )
   )
 ),
-Comment(LineComment),
+Attribute(
+  Identifier
+  Expression(
+    ForExpr(
+      ForTupleExpr(
+        ForIntro(
+          for
+          Identifier
+          Identifier
+          in
+          Expression(VariableExpr(Identifier))
+        )
+        Expression(
+          TemplateExpr(
+            QuotedTemplate(
+              QuotedTemplateStart
+              TemplateInterpolation(
+                TemplateInterpolationStart
+                Expression(VariableExpr(Identifier))
+                TemplateInterpolationEnd
+              )
+              TemplateLiteral
+              TemplateInterpolation(
+                TemplateInterpolationStart
+                Expression(VariableExpr(Identifier))
+                TemplateInterpolationEnd
+              )
+              QuotedTemplateEnd)))))))
 Attribute(
   Identifier
   Expression (

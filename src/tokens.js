@@ -172,6 +172,10 @@ export const scanTemplateLiteralChunk = new ExternalTokenizer(
       (stack.context.type === ContextType.QUOTED_TEMPLATE ||
         stack.context.type === ContextType.HEREDOC_TEMPLATE)
     ) {
+      if (input.next === -1) {
+        return;
+      }
+
       input.advance();
       return input.acceptToken(templateLiteralChunk);
     }

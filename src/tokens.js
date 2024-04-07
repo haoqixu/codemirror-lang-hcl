@@ -11,18 +11,34 @@ import {
 } from "./syntax.grammar.terms";
 
 const ContextType = {
-  QUOTED_TEMPLATE: "QuotedTemplate",
-  TEMPLATE_INTERPOLATION: "TemplateInterpolation",
-  TEMPLATE_DIRECTIVE: "TemplateDirective",
-  HEREDOC_TEMPLATE: "HeredocTemplate",
+  QUOTED_TEMPLATE: 1,
+  TEMPLATE_INTERPOLATION: 2,
+  TEMPLATE_DIRECTIVE: 4,
+  HEREDOC_TEMPLATE: 8,
 };
 
-// TODO: hash
+const hashStr = function (str) {
+  var hash = 0,
+    i,
+    chr;
+  if (str.length === 0) return hash;
+  for (i = 0; i < str.length; i++) {
+    chr = this.charCodeAt(i);
+    hash = (hash << 5) - hash + chr;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
+};
+
 class Context {
   constructor(parent, type, heredoc_identifier) {
     this.parent = parent;
     this.type = type;
     this.heredoc_identifier = heredoc_identifier;
+    this.hash =
+      (parent ? (parent.hash + parent.hash) << 8 : 0) +
+      (type << 4) +
+      (this.heredoc_identifier === "" ? 0 : hashStr(this.heredoc_identifier));
   }
 }
 
@@ -65,6 +81,9 @@ export const trackTemplate = new ContextTracker({
     }
 
     return context;
+  },
+  hash(context) {
+    return context.hash;
   },
 });
 
@@ -161,7 +180,6 @@ export const scanTemplateLiteralChunk = new ExternalTokenizer(
 );
 export const scanTemplateInterpolationStart = new ExternalTokenizer(
   (input, stack) => {
-
     if (
       stack.canShift(TemplateInterpolationStart) &&
       stack.canShift(templateLiteralChunk) &&

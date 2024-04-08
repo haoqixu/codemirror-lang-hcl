@@ -23,7 +23,7 @@ const hashStr = function (str) {
     chr;
   if (str.length === 0) return hash;
   for (i = 0; i < str.length; i++) {
-    chr = this.charCodeAt(i);
+    chr = str.charCodeAt(i);
     hash = (hash << 5) - hash + chr;
     hash |= 0; // Convert to 32bit integer
   }
@@ -60,11 +60,12 @@ export const trackTemplate = new ContextTracker({
       term === HeredocIdentifier &&
       context.type !== ContextType.HEREDOC_TEMPLATE
     ) {
-      return new Context(
+      const ctx = new Context(
         context,
         ContextType.HEREDOC_TEMPLATE,
         input.read(input.pos, stack.pos)
       );
+      return ctx;
     }
 
     if (
@@ -145,7 +146,7 @@ export const scanTemplateLiteralChunk = new ExternalTokenizer(
             case "u":
               for (let i = 0; i < 4; i++) {
                 input.advance();
-                if (!/0-9a-fA-F/.test(String.fromCharCode(input.next))) {
+                if (!/[0-9a-fA-F]/.test(String.fromCharCode(input.next))) {
                   return;
                 }
               }
@@ -154,7 +155,7 @@ export const scanTemplateLiteralChunk = new ExternalTokenizer(
             case "U":
               for (let i = 0; i < 8; i++) {
                 input.advance();
-                if (!/0-9a-fA-F/.test(String.fromCharCode(input.next))) {
+                if (!/[0-9a-fA-F]/.test(String.fromCharCode(input.next))) {
                   return;
                 }
               }
@@ -170,12 +171,9 @@ export const scanTemplateLiteralChunk = new ExternalTokenizer(
       stack.canShift(templateLiteralChunk) &&
       stack.context &&
       (stack.context.type === ContextType.QUOTED_TEMPLATE ||
-        stack.context.type === ContextType.HEREDOC_TEMPLATE)
+        stack.context.type === ContextType.HEREDOC_TEMPLATE) &&
+      input.next !== -1
     ) {
-      if (input.next === -1) {
-        return;
-      }
-
       input.advance();
       return input.acceptToken(templateLiteralChunk);
     }
@@ -274,38 +272,76 @@ export const scanTemplateDirectiveEnd = new ExternalTokenizer(
   { contextual: true, fallback: true }
 );
 
-// TODO: leading whitespace with newline
 export const scanHeredocIdentifier = new ExternalTokenizer(
   (input, stack) => {
     if (
       stack.canShift(HeredocIdentifier) &&
-      !(stack.context && stack.context.type === ContextType.HEREDOC_TEMPLATE)
+      !(stack.context && stack.context.type === ContextType.HEREDOC_TEMPLATE) &&
+      input.next !== -1
     ) {
-      while (
-        /0-9a-zA-Z/.test(String.fromCharCode(input.next)) ||
-        String.fromCharCode(input.next) === "_" ||
-        String.fromCharCode(input.next) === "-"
-      ) {
+      let next = String.fromCharCode(input.next);
+      while (/[0-9a-zA-Z]/.test(next) || next === "_" || next === "-") {
         input.advance();
+        next = String.fromCharCode(input.next);
       }
+
       return input.acceptToken(HeredocIdentifier);
     }
+
     if (
       stack.canShift(HeredocIdentifier) &&
       stack.canShift(templateLiteralChunk) &&
       stack.context &&
-      stack.context.type === ContextType.HEREDOC_TEMPLATE
+      stack.context.type === ContextType.HEREDOC_TEMPLATE &&
+      input.next != -1
     ) {
       const expected = stack.context.heredoc_identifier;
+
+      let has_leading_whitespace_with_newline = false;
+      let has_leading_whitespace = false;
+      let next = String.fromCharCode(input.next);
+      while (/\s/.test(next)) {
+        has_leading_whitespace = true;
+        if (next === "\n") {
+          has_leading_whitespace_with_newline = true;
+        }
+        input.advance();
+        next = String.fromCharCode(input.next);
+      }
+      if (has_leading_whitespace) {
+        input.acceptToken(templateLiteralChunk);
+      }
+
+      if (!has_leading_whitespace_with_newline) {
+        return;
+      }
+
+      let advance = 0;
       for (let i = 0; i < expected.length; i++) {
         if (String.fromCharCode(input.next) === expected[i]) {
           input.advance();
+          advance++;
         } else {
+          if (advance) {
+            input.acceptToken(templateLiteralChunk);
+          }
+          return
+        }
+      }
+
+      // check if the identifier is on a line of its own
+      let i = 0;
+      while (true) {
+        const ch = input.peek(i);
+        if (ch == -1 || String.fromCharCode(ch) === "\n") {
+          return input.acceptToken(HeredocIdentifier);
+        }
+
+        if (!/\s/.test(String.fromCharCode(ch))) {
           return input.acceptToken(templateLiteralChunk);
         }
 
-        // TODO
-        input.acceptToken(HeredocIdentifier);
+        i++;
       }
     }
   },

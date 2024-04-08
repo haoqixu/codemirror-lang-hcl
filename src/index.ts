@@ -12,14 +12,14 @@ export const hclLanguage = LRLanguage.define({
         Application: foldInside
       }),
       styleTags({
-        "for in if": t.controlKeyword,
+        "for in if else endfor endif": t.controlKeyword,
         "Attribute/Identifier": t.attributeName,
         "Attribute/Expression": t.attributeValue,
         "Block/Identifier": t.typeName,
         "VariableExpr/Identifier": t.variableName,
         Identifier: t.name,
         BoolLit: t.bool,
-        StringLit: t.string,
+        "StringLit/...": t.string,
         NumericLit: t.number,
         NullLit: t.null,
         Comment: t.comment,
@@ -28,6 +28,10 @@ export const hclLanguage = LRLanguage.define({
         "( )": t.paren,
         "{ }": t.bracket,
         "[ ]": t.squareBracket,
+
+        TemplateInterpolationStart: t.paren,
+        TemplateInterpolationEnd: t.paren,
+        Ellipsis: t.punctuation,
       }),
     ]
   }),

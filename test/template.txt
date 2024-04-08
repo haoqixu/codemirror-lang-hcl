@@ -66,3 +66,133 @@ ConfigFile(
                             TemplateLiteral
                             QuotedTemplateEnd))))))
 
+# Complex Heredoc
+
+tpl4   = <<EOF
+%{ for a in f(b) ~}
+  ${func("foo${ a }")}
+%{ endfor ~}
+EOF
+
+tpl5 = <<-EOF
+%{~if cond~} 
+  "foo" 
+%{~else~}
+  4
+%{~endif~}
+    EOF
+
+tpl6 = <<-EOF
+%{ for a in f(b) ~}
+  %{~if a~} "true" %{~else~} "false" %{~endif~}
+%{ endfor ~}
+    EOF
+
+==>
+
+ConfigFile(
+        Body(
+            Attribute(
+                Identifier
+                Expression(
+                    TemplateExpr(
+                        HeredocTemplate(
+                            HeredocStart
+                            HeredocIdentifier
+                            TemplateLiteral
+                            TemplateDirective(
+                                TemplateFor(
+                                    TemplateForStart(
+                                        TemplateDirectiveStart
+                                        for, Identifier, in
+                                        Expression(
+                                            FunctionCall(
+                                                Identifier
+                                                FunctionArguments(
+                                                    Expression(VariableExpr(Identifier)))))
+                                        StripMarker
+                                        TemplateDirectiveEnd)
+                                    TemplateLiteral
+                                    TemplateInterpolation(
+                                        TemplateInterpolationStart
+                                        Expression(
+                                            FunctionCall(
+                                                Identifier
+                                                FunctionArguments(
+                                                    Expression(
+                                                        TemplateExpr(
+                                                            QuotedTemplate(
+                                                                QuotedTemplateStart
+                                                                TemplateLiteral
+                                                                TemplateInterpolation(
+                                                                    TemplateInterpolationStart
+                                                                    Expression(
+                                                                        VariableExpr(Identifier))
+                                                                    TemplateInterpolationEnd)
+                                                                QuotedTemplateEnd))))))
+                                        TemplateInterpolationEnd)
+                                    TemplateLiteral
+                                    TemplateForEnd(TemplateDirectiveStart,endfor,StripMarker,TemplateDirectiveEnd)))
+                            HeredocIdentifier))))
+            Attribute(
+                Identifier
+                Expression(
+                    TemplateExpr(
+                        HeredocTemplate(
+                            HeredocStart
+                            HeredocIdentifier
+                            TemplateLiteral
+                            TemplateDirective(
+                                TemplateIf(
+                                    TemplateIfIntro(
+                                        TemplateDirectiveStart
+                                        StripMarker
+                                        if
+                                        Expression(VariableExpr(Identifier))
+                                        StripMarker
+                                        TemplateDirectiveEnd)
+                                    TemplateLiteral
+                                    TemplateElseIntro(TemplateDirectiveStart,StripMarker,else,StripMarker,TemplateDirectiveEnd)
+                                    TemplateLiteral
+                                    TemplateIfEnd(TemplateDirectiveStart,StripMarker,endif,StripMarker,TemplateDirectiveEnd)
+                                ))
+                            HeredocIdentifier))))
+            Attribute(
+                Identifier
+                Expression(
+                    TemplateExpr(
+                        HeredocTemplate(
+                            HeredocStart
+                            HeredocIdentifier
+                            TemplateLiteral
+                            TemplateDirective(
+                                TemplateFor(
+                                    TemplateForStart(
+                                        TemplateDirectiveStart
+                                        for
+                                        Identifier
+                                        in
+                                        Expression(
+                                            FunctionCall(
+                                                Identifier
+                                                FunctionArguments(
+                                                    Expression(VariableExpr(Identifier)))))
+                                        StripMarker
+                                        TemplateDirectiveEnd)
+                                    TemplateLiteral
+                                    TemplateDirective(
+                                        TemplateIf(
+                                            TemplateIfIntro(
+                                                    TemplateDirectiveStart
+                                                    StripMarker
+                                                    if
+                                                    Expression(VariableExpr(Identifier))
+                                                    StripMarker
+                                                    TemplateDirectiveEnd)
+                                            TemplateLiteral
+                                            TemplateElseIntro(TemplateDirectiveStart,StripMarker,else,StripMarker,TemplateDirectiveEnd)
+                                            TemplateLiteral
+                                            TemplateIfEnd(TemplateDirectiveStart,StripMarker,endif,StripMarker,TemplateDirectiveEnd)))
+                                    TemplateLiteral
+                                    TemplateForEnd(TemplateDirectiveStart,endfor,StripMarker,TemplateDirectiveEnd)))
+                            HeredocIdentifier))))))

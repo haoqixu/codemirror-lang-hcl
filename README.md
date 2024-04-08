@@ -24,7 +24,7 @@ import {hcl} from "codemirror-lang-hcl";
 const state = EditorState.create({
 	doc: 'my hcl code',
 	extensions: [
-        hcl(),
+		hcl(),
 	]
 });
 
@@ -35,5 +35,9 @@ const view = new EditorView({
 ```
 
 ## Example
+
+This example is from [tree-sitter-hcl](https://github.com/tree-sitter-grammars/tree-sitter-hcl).
+
+Theme: https://thememirror.net/tomorrow.
 
 ![example.png](./screenshot/example.png)

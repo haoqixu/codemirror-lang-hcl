@@ -107,7 +107,7 @@ TemplateDirective { TemplateFor | TemplateIf }
 TemplateFor { TemplateForStart template? TemplateForEnd }
 TemplateForStart {
       TemplateDirectiveStart
-      StripMarker
+      StripMarker?
       kw<"for">
       Identifier
       ("," Identifier)?

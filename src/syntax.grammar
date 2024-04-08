@@ -32,7 +32,7 @@ ObjectElem { !objectElem Expression ("=" | ":") Expression }
     conditional @left
     functionArguments @right
 
-    templateLiteral @right
+    templateLiteralChunk, templateLiteralChunkEmpty
 
     stringLit, quotedTemplate
 }
@@ -93,7 +93,9 @@ template {
     )+
 }
 
-TemplateLiteral { !templateLiteral templateLiteralChunk+ }
+TemplateLiteral { templateLiteralChunk templateLiteralChunks }
+templateLiteralChunks { !templateLiteralChunkEmpty "" | !templateLiteralChunk templateLiteralChunk templateLiteralChunks }
+
 TemplateInterpolation {
   TemplateInterpolationStart
   StripMarker?

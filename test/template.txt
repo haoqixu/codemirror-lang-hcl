@@ -1,6 +1,6 @@
-# Template
+# Template interpolation
 
-a = "${hello}"
+a = "${hello}abc"
 
 ==>
 
@@ -16,4 +16,53 @@ ConfigFile(
                                 TemplateInterpolationStart
                                 Expression(VariableExpr(Identifier))
                                 TemplateInterpolationEnd)
+                            TemplateLiteral,
                             QuotedTemplateEnd))))))
+
+# Simple Heredoc
+
+f = <<-EOF
+  hello, EO
+  F
+  world, EOF
+  EOF xxx
+ EOF
+a = b
+
+==>
+
+ConfigFile(
+        Body(
+            Attribute(
+                Identifier
+                Expression(
+                    TemplateExpr(
+                        HeredocTemplate(
+                            HeredocStart
+                            HeredocIdentifier
+                            TemplateLiteral
+                            HeredocIdentifier))))
+            Attribute(
+                Identifier
+                Expression(
+                    VariableExpr(Identifier)
+                )
+            )))
+
+# String Literval
+
+a = "aaaaaa"
+
+==>
+
+ConfigFile(
+        Body(
+            Attribute(
+                Identifier
+                Expression(
+                    LiteralValue(
+                        StringLit(
+                            QuotedTemplateStart
+                            TemplateLiteral
+                            QuotedTemplateEnd))))))
+

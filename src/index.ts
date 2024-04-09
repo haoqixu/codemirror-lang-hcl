@@ -13,16 +13,51 @@ export const hclLanguage = LRLanguage.define({
   parser: parser.configure({
     props: [
       indentNodeProp.add({
-        Application: delimitedIndent({ closing: ")", align: false }),
+        Block: delimitedIndent({ closing: "}", align: false }),
       }),
       foldNodeProp.add({
-        Application: foldInside,
+        "Object Tuple TemplateFor TemplateIf": foldInside,
+        BlockComment: (tree) => {
+          return { from: tree.from + 2, to: tree.to - 2 };
+        },
+        HeredocTemplate(tree) {
+          const start = tree.getChild("HeredocIdentifier");
+          if (!start) {
+            return null;
+          }
+          return {
+            from: start.to,
+            to: tree.to,
+          };
+        },
+        FunctionCall(tree) {
+          const start = tree.getChild("(");
+          const end = tree.getChild(")");
+          if (!start || !end) {
+            return null;
+          }
+          return {
+            from: start.from + 1,
+            to: end.to - 1,
+          };
+        },
+        Block(tree) {
+          const start = tree.getChild("{");
+          const end = tree.getChild("}");
+          if (!start || !end) {
+            return null;
+          }
+          return {
+            from: start.from + 1,
+            to: end.to - 1,
+          };
+        },
       }),
       hclHighlight,
     ],
   }),
   languageData: {
-    commentTokens: { line: ";" },
+    commentTokens: { line: "#", block: { open: "/*", close: "*/" } },
   },
 });
 

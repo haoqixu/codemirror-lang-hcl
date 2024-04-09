@@ -178,3 +178,40 @@ ConfigFile(
                                     QuotedTemplateStart
                                     TemplateLiteral
                                     QuotedTemplateEnd))))))))
+
+# nested block
+
+outer_block "outer" "abc" {
+    inner_block "inner" "def" {
+    }
+}
+
+==>
+
+ConfigFile(
+        Body(
+            Block(
+                Identifier,
+                StringLit(
+                    QuotedTemplateStart,
+                    TemplateLiteral,
+                    QuotedTemplateEnd),
+                StringLit(
+                    QuotedTemplateStart,
+                    TemplateLiteral,
+                    QuotedTemplateEnd),
+                "{",
+                Body(
+                    Block(
+                        Identifier,
+                        StringLit(
+                            QuotedTemplateStart,
+                            TemplateLiteral,
+                            QuotedTemplateEnd),
+                        StringLit(
+                            QuotedTemplateStart,
+                            TemplateLiteral,
+                            QuotedTemplateEnd),
+                        "{",
+                        "}")),
+                "}")))

@@ -224,6 +224,8 @@ kw<word> { @specialize[@name={word}]<Identifier, word>}
 @tokens {
     space { @whitespace+ }
 
+    "(" ")" "[" "]" "{" "}"
+
     NumericLit {
         @digit+ ("." @digit+ ($[eE]$[+-]? @digit+)?)? |
         "0x" (@digit | $[a-fA-F])+

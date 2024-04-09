@@ -80,40 +80,101 @@ ConfigFile(Body(
                            (Operation(BinaryOperation
                                       (Operation(BinaryOperation(
                                           LiteralValue(NumericLit),
+                                          ArithOp
                                           LiteralValue(NumericLit)
                                       )),
+                                      ArithOp
                                       LiteralValue(NumericLit))),
+                            ArithOp
                             LiteralValue(NumericLit))))),
             Attribute(Identifier,Expression
                 (Operation(BinaryOperation
                            (Operation(BinaryOperation(
                                 LiteralValue(NumericLit),
-                                Expression(Operation(BinaryOperation(LiteralValue(NumericLit),LiteralValue(NumericLit)))))),
-                                LiteralValue(NumericLit))))),
+                                ArithOp
+                                Expression(Operation(BinaryOperation(
+                                            LiteralValue(NumericLit)
+                                            ArithOp
+                                            LiteralValue(NumericLit)))))),
+                            ArithOp
+                            LiteralValue(NumericLit))))),
             Attribute(Identifier,Expression
                 (Operation(BinaryOperation(
                     LiteralValue(NumericLit),
+                    ArithOp
                     Expression(Operation(
                         BinaryOperation(
                             LiteralValue(NumericLit),
-                            Expression(Operation(BinaryOperation(LiteralValue(NumericLit),LiteralValue(NumericLit))))))))))),
+                            ArithOp
+                            Expression(Operation(BinaryOperation(
+                                        LiteralValue(NumericLit),
+                                        ArithOp
+                                        LiteralValue(NumericLit))))))))))),
             Attribute(Identifier,Expression
                 (Operation(BinaryOperation
                            (Operation(BinaryOperation(
-                               LiteralValue(NumericLit),
-                               Operation(BinaryOperation(LiteralValue(NumericLit),LiteralValue(NumericLit)))
-                           )),
-                           LiteralValue(NumericLit))))),
+                                                      LiteralValue(NumericLit),
+                                                      ArithOp
+                                                      Operation(BinaryOperation(
+                                                              LiteralValue(NumericLit)
+                                                              ArithOp
+                                                              LiteralValue(NumericLit)))
+                                                     )),
+                            ArithOp
+                            LiteralValue(NumericLit))))),
             Attribute(Identifier,Expression
                 (Operation(BinaryOperation(
-                           LiteralValue(NumericLit),
-                           Operation(BinaryOperation(
-                                   Expression(Operation(BinaryOperation(LiteralValue(NumericLit),LiteralValue(NumericLit)))),
-                                   LiteralValue(NumericLit),
-                                   )))))),
+                                           LiteralValue(NumericLit),
+                                           ArithOp
+                                           Operation(BinaryOperation(
+                                                   Expression(Operation(BinaryOperation(
+                                                               LiteralValue(NumericLit)
+                                                               ArithOp
+                                                               LiteralValue(NumericLit)))),
+                                                   ArithOp
+                                                   LiteralValue(NumericLit))))))),
             Attribute(Identifier,Expression
                     (Operation(BinaryOperation(
                        LiteralValue(NumericLit),
+                       ArithOp
                        Operation(BinaryOperation(
                                LiteralValue(NumericLit),
-                               Expression(Operation(BinaryOperation(LiteralValue(NumericLit),LiteralValue(NumericLit))))))))))))
+                               ArithOp
+                               Expression(Operation(BinaryOperation(
+                                           LiteralValue(NumericLit)
+                                           ArithOp
+                                           LiteralValue(NumericLit))))))))))))
+
+# ternary operator
+
+a = (1 > 2) ? "a" : "b"
+
+==>
+
+ConfigFile(
+        Body(
+            Attribute(
+                Identifier
+                Expression(
+                    Conditional(
+                        Expression(
+                            Expression(
+                                Operation(
+                                    BinaryOperation(
+                                        LiteralValue(NumericLit)
+                                        CompareOp
+                                        LiteralValue(NumericLit)))))
+                        ControlOp
+                        Expression(
+                            LiteralValue(
+                                StringLit(
+                                    QuotedTemplateStart
+                                    TemplateLiteral
+                                    QuotedTemplateEnd)))
+                        ControlOp
+                        Expression(
+                            LiteralValue(
+                                StringLit(
+                                    QuotedTemplateStart
+                                    TemplateLiteral
+                                    QuotedTemplateEnd))))))))

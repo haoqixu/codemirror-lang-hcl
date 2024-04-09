@@ -165,17 +165,22 @@ VariableExpr { !variableExpr Identifier}
 FunctionCall { Identifier "(" FunctionArguments? ")" }
 FunctionArguments { !functionArguments Expression ("," Expression)* ("," | Ellipsis)? }
 
-Conditional { !conditional Expression "?" Expression ":" Expression }
+Conditional { !conditional Expression ControlOp<"?"> Expression ControlOp<":"> Expression }
+
+ArithOp<expr> { expr }
+LogicOp<expr> { expr }
+CompareOp<expr> { expr }
+ControlOp<expr> { expr }
 
 Operation { UnaryOperation | BinaryOperation }
-UnaryOperation { !unaryOperation ("-" | "!") _expr_term }
+UnaryOperation { !unaryOperation (ArithOp<"-"> | LogicOp<"!">) _expr_term }
 BinaryOperation {
-    _expr_term !binary_mult ("*" | "/" | "%") _expr_term |
-    _expr_term !binary_add  ("+" | "-") _expr_term |
-    _expr_term !binary_ord  (">" | ">=" | "<" | "<=") _expr_term |
-    _expr_term !binary_comp ("==" | "!=") _expr_term |
-    _expr_term !binary_and  "&&" _expr_term |
-    _expr_term !binary_or   "||" _expr_term
+    _expr_term !binary_mult ArithOp<"*" | "/" | "%"> _expr_term |
+    _expr_term !binary_add  ArithOp<"+" | "-"> _expr_term |
+    _expr_term !binary_ord  CompareOp<">" | ">=" | "<" | "<="> _expr_term |
+    _expr_term !binary_comp CompareOp<"==" | "!="> _expr_term |
+    _expr_term !binary_and  LogicOp<"&&"> _expr_term |
+    _expr_term !binary_or   LogicOp<"||"> _expr_term
 }
 
 ForExpr { ForTupleExpr | ForObjectExpr }

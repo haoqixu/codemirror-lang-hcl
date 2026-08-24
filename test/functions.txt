@@ -1,0 +1,123 @@
+# Function call
+
+result = upper("hello")
+
+==>
+
+ConfigFile(Body(
+  Attribute(
+    Identifier,
+    Expression(
+      FunctionCall(
+        Identifier,
+        FunctionArguments(
+          Expression(
+            LiteralValue(
+              StringLit(
+                QuotedTemplateStart,
+                TemplateLiteral,
+                QuotedTemplateEnd)))))))))
+
+# Namespaced function call
+
+result = provider::function("arg")
+
+==>
+
+ConfigFile(Body(
+  Attribute(
+    Identifier,
+    Expression(
+      FunctionCall(
+        Identifier,
+        NamespaceSeparator,
+        Identifier,
+        FunctionArguments(
+          Expression(
+            LiteralValue(
+              StringLit(
+                QuotedTemplateStart,
+                TemplateLiteral,
+                QuotedTemplateEnd)))))))))
+
+# Multi-level namespaced function call
+
+result = provider::time::rfc3339_parse("2023-07-25T23:43:16Z")
+
+==>
+
+ConfigFile(Body(
+  Attribute(
+    Identifier,
+    Expression(
+      FunctionCall(
+        Identifier,
+        NamespaceSeparator,
+        Identifier,
+        NamespaceSeparator,
+        Identifier,
+        FunctionArguments(
+          Expression(
+            LiteralValue(
+              StringLit(
+                QuotedTemplateStart,
+                TemplateLiteral,
+                QuotedTemplateEnd)))))))))
+
+# Namespaced function call with whitespace
+
+result = provider :: function()
+
+==>
+
+ConfigFile(Body(
+  Attribute(
+    Identifier,
+    Expression(
+      FunctionCall(
+        Identifier,
+        NamespaceSeparator,
+        Identifier)))))
+
+# Namespaced function call in template interpolation
+
+result = "${provider::function(var.input)}"
+
+==>
+
+ConfigFile(Body(
+  Attribute(
+    Identifier,
+    Expression(
+      TemplateExpr(
+        QuotedTemplate(
+          QuotedTemplateStart,
+          TemplateInterpolation(
+            TemplateInterpolationStart,
+            Expression(
+              FunctionCall(
+                Identifier,
+                NamespaceSeparator,
+                Identifier,
+                FunctionArguments(
+                  Expression(
+                    VariableExpr(Identifier),
+                    GetAttr(Identifier))))),
+            TemplateInterpolationEnd),
+          QuotedTemplateEnd))))))
+
+# Namespace is only valid for function calls
+
+result = provider::function
+
+==>
+
+ConfigFile(Body(
+  Attribute(
+    Identifier,
+    Expression(
+      FunctionCall(
+        Identifier,
+        NamespaceSeparator,
+        Identifier,
+        ⚠)))))

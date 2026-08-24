@@ -41,6 +41,7 @@ export const hclHighlight = styleTags({
   StripMarker: t.special(t.brace),
 
   Ellipsis: t.punctuation,
+  NamespaceSeparator: t.punctuation,
   ": =>": t.punctuation,
   ",": t.separator,
 });

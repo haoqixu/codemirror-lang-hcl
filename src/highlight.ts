@@ -4,13 +4,18 @@ export const hclHighlight = styleTags({
   "for in if else endfor endif": t.controlKeyword,
 
   "Attribute/Identifier": t.definition(t.propertyName),
+  "ObjectKey/Expression/VariableExpr/Identifier": t.definition(
+    t.propertyName,
+  ),
   "ForIntro/Identifier TemplateForStart/Identifier": t.definition(
     t.variableName,
   ),
 
-  "Block/Identifier": t.definitionKeyword,
+  "BlockType!": t.typeName,
+  "BlockLabel!": t.labelName,
 
-  "FunctionCall/Identifier": t.function(t.variableName),
+  "FunctionNamespace/Identifier": t.namespace,
+  "FunctionName/Identifier": t.function(t.variableName),
 
   "VariableExpr/Identifier": t.variableName,
   "GetAttr/Identifier": t.propertyName,
@@ -32,6 +37,9 @@ export const hclHighlight = styleTags({
   LogicOp: t.logicOperator,
   CompareOp: t.compareOperator,
   ControlOp: t.controlOperator,
+  "ControlOp/Colon": t.controlOperator,
+  AssignOp: t.definitionOperator,
+  DerefOp: t.derefOperator,
 
   HeredocIdentifier: t.special(t.controlKeyword),
   HeredocStart: t.operator,
@@ -39,7 +47,7 @@ export const hclHighlight = styleTags({
   "TemplateDirectiveStart TemplateDirectiveEnd": t.special(t.brace),
   StripMarker: t.special(t.brace),
 
-  "AttrSplat FullSplat": t.derefOperator,
-  Ellipsis: t.punctuation,
-  NamespaceSeparator: t.separator,
+  "AttrSplat FullSplat LegacyIndex": t.derefOperator,
+  "Arrow Ellipsis": t.punctuation,
+  "ObjectElem/Colon ForIntro/Colon Comma NamespaceSeparator": t.separator,
 });

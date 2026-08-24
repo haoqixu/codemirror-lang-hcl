@@ -1,0 +1,103 @@
+# Object attributes
+
+value = {
+  name = "example"
+  enabled: true,
+}
+
+==>
+
+ConfigFile(
+  Body(
+    Attribute(
+      Identifier,
+      AssignOp,
+      Expression(
+        CollectionValue(
+          Object(
+            ObjectElem(
+              ObjectKey(Expression(VariableExpr(Identifier))),
+              AssignOp,
+              Expression(LiteralValue(StringLit(QuotedTemplateStart,TemplateLiteral,QuotedTemplateEnd)))
+            ),
+            ObjectElem(ObjectKey(Expression(VariableExpr(Identifier))),Colon,Expression(LiteralValue(BoolLit(true)))),
+            Comma
+          )
+        )
+      )
+    )
+  )
+)
+
+# Dynamic object key
+
+value = {
+  (var.key) = var.value
+}
+
+==>
+
+ConfigFile(
+  Body(
+    Attribute(
+      Identifier,
+      AssignOp,
+      Expression(
+        CollectionValue(
+          Object(
+            ObjectElem(
+              ObjectKey(Expression(Expression(VariableExpr(Identifier),GetAttr(DerefOp,Identifier)))),
+              AssignOp,
+              Expression(VariableExpr(Identifier),GetAttr(DerefOp,Identifier))
+            )
+          )
+        )
+      )
+    )
+  )
+)
+
+# Quoted object key
+
+value = {
+  "display-name" = null
+}
+
+==>
+
+ConfigFile(
+  Body(
+    Attribute(
+      Identifier,
+      AssignOp,
+      Expression(
+        CollectionValue(
+          Object(
+            ObjectElem(
+              ObjectKey(Expression(LiteralValue(StringLit(QuotedTemplateStart,TemplateLiteral,QuotedTemplateEnd)))),
+              AssignOp,
+              Expression(LiteralValue(NullLit(null)))
+            )
+          )
+        )
+      )
+    )
+  )
+)
+
+# Top-level object
+
+{
+  first = 1,
+  second = 2
+}
+
+==>
+
+ConfigFile(
+  Object(
+    ObjectElem(ObjectKey(Expression(VariableExpr(Identifier))),AssignOp,Expression(LiteralValue(NumericLit))),
+    Comma,
+    ObjectElem(ObjectKey(Expression(VariableExpr(Identifier))),AssignOp,Expression(LiteralValue(NumericLit)))
+  )
+)

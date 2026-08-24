@@ -8,6 +8,7 @@ ConfigFile(
         Body(
             Attribute(
                 Identifier
+                AssignOp
                 Expression(
                     TemplateExpr(
                         QuotedTemplate(
@@ -35,6 +36,7 @@ ConfigFile(
         Body(
             Attribute(
                 Identifier
+                AssignOp
                 Expression(
                     TemplateExpr(
                         HeredocTemplate(
@@ -44,6 +46,7 @@ ConfigFile(
                             HeredocIdentifier))))
             Attribute(
                 Identifier
+                AssignOp
                 Expression(
                     VariableExpr(Identifier)
                 )
@@ -59,6 +62,7 @@ ConfigFile(
         Body(
             Attribute(
                 Identifier
+                AssignOp
                 Expression(
                     LiteralValue(
                         StringLit(
@@ -94,6 +98,7 @@ ConfigFile(
         Body(
             Attribute(
                 Identifier
+                AssignOp
                 Expression(
                     TemplateExpr(
                         HeredocTemplate(
@@ -107,7 +112,7 @@ ConfigFile(
                                         for, Identifier, in
                                         Expression(
                                             FunctionCall(
-                                                Identifier
+                                                FunctionName(Identifier)
                                                 FunctionArguments(
                                                     Expression(VariableExpr(Identifier)))))
                                         StripMarker
@@ -117,7 +122,7 @@ ConfigFile(
                                         TemplateInterpolationStart
                                         Expression(
                                             FunctionCall(
-                                                Identifier
+                                                FunctionName(Identifier)
                                                 FunctionArguments(
                                                     Expression(
                                                         TemplateExpr(
@@ -136,6 +141,7 @@ ConfigFile(
                             HeredocIdentifier))))
             Attribute(
                 Identifier
+                AssignOp
                 Expression(
                     TemplateExpr(
                         HeredocTemplate(
@@ -159,6 +165,7 @@ ConfigFile(
                             HeredocIdentifier))))
             Attribute(
                 Identifier
+                AssignOp
                 Expression(
                     TemplateExpr(
                         HeredocTemplate(
@@ -174,7 +181,7 @@ ConfigFile(
                                         in
                                         Expression(
                                             FunctionCall(
-                                                Identifier
+                                                FunctionName(Identifier)
                                                 FunctionArguments(
                                                     Expression(VariableExpr(Identifier)))))
                                         StripMarker

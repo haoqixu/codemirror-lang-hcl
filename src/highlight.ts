@@ -4,29 +4,28 @@ export const hclHighlight = styleTags({
   "for in if else endfor endif": t.controlKeyword,
 
   "Attribute/Identifier": t.definition(t.propertyName),
-  "ForIntro/Identifier": t.definition(t.propertyName),
+  "ForIntro/Identifier TemplateForStart/Identifier": t.definition(
+    t.variableName,
+  ),
 
   "Block/Identifier": t.definitionKeyword,
 
   "FunctionCall/Identifier": t.function(t.variableName),
 
-  "Attribute/Expression": t.attributeValue,
   "VariableExpr/Identifier": t.variableName,
-  "GetAttr/Identifier": t.variableName,
+  "GetAttr/Identifier": t.propertyName,
   Identifier: t.name,
 
-  "LiteralValue/...": t.literal,
-  "StringLit/... TemplateLiteral": t.string,
+  "QuotedTemplateStart QuotedTemplateEnd TemplateLiteral": t.string,
   NumericLit: t.number,
-  BoolLit: t.bool,
-  NullLit: t.null,
-  Comment: t.comment,
+  "true false": t.bool,
+  null: t.null,
 
   LineComment: t.lineComment,
   BlockComment: t.blockComment,
 
   "( )": t.paren,
-  "{ }": t.bracket,
+  "{ }": t.brace,
   "[ ]": t.squareBracket,
 
   ArithOp: t.arithmeticOperator,
@@ -35,13 +34,12 @@ export const hclHighlight = styleTags({
   ControlOp: t.controlOperator,
 
   HeredocIdentifier: t.special(t.controlKeyword),
-  HeredocStart: t.special(t.brace),
+  HeredocStart: t.operator,
   "TemplateInterpolationStart TemplateInterpolationEnd": t.special(t.brace),
   "TemplateDirectiveStart TemplateDirectiveEnd": t.special(t.brace),
   StripMarker: t.special(t.brace),
 
+  "AttrSplat FullSplat": t.derefOperator,
   Ellipsis: t.punctuation,
-  NamespaceSeparator: t.punctuation,
-  ": =>": t.punctuation,
-  ",": t.separator,
+  NamespaceSeparator: t.separator,
 });

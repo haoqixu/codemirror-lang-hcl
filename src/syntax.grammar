@@ -162,7 +162,8 @@ _tuple_elems { Expression ("," Expression)* ","? }
 
 VariableExpr { !variableExpr Identifier}
 
-FunctionCall { Identifier "(" FunctionArguments? ")" }
+FunctionCall { Identifier (NamespaceSeparator Identifier)* "(" FunctionArguments? ")" }
+NamespaceSeparator { "::" }
 FunctionArguments { !functionArguments Expression ("," Expression)* ("," | Ellipsis)? }
 
 Conditional { !conditional Expression ControlOp<"?"> Expression ControlOp<":"> Expression }

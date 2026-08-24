@@ -7,11 +7,14 @@ Body { (Attribute | Block)+ }
 
 Attribute { Identifier "=" Expression }
 
-Block { Identifier (Identifier | StringLit)* "{" Body? "}" }
+Block { BlockType BlockLabel* "{" Body? "}" }
+BlockType { Identifier }
+BlockLabel { Identifier | StringLit }
 
 Object { "{" _object_elems? "}" }
 _object_elems { ObjectElem (","? ObjectElem)* ","? }
-ObjectElem { !objectElem Expression ("=" | ":") Expression }
+ObjectElem { ObjectKey ("=" | ":") Expression }
+ObjectKey { !objectElem Expression }
 
 @precedence {
     unaryOperation @left
@@ -162,7 +165,9 @@ _tuple_elems { Expression ("," Expression)* ","? }
 
 VariableExpr { !variableExpr Identifier}
 
-FunctionCall { Identifier (NamespaceSeparator Identifier)* "(" FunctionArguments? ")" }
+FunctionCall { FunctionNamespace* FunctionName "(" FunctionArguments? ")" }
+FunctionNamespace { Identifier NamespaceSeparator }
+FunctionName { Identifier }
 NamespaceSeparator { "::" }
 FunctionArguments { !functionArguments Expression ("," Expression)* ("," | Ellipsis)? }
 
@@ -226,6 +231,11 @@ kw<word> { @specialize[@name={word}]<Identifier, word>}
     space { @whitespace+ }
 
     "(" ")" "[" "]" "{" "}"
+    "="[@name=AssignOp]
+    "=>"[@name=Arrow]
+    ":"[@name=Colon]
+    ","[@name=Comma]
+    "."[@name=DerefOp]
 
     NumericLit {
         @digit+ ("." @digit+ ($[eE]$[+-]? @digit+)?)? |

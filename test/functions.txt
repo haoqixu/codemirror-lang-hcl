@@ -7,9 +7,10 @@ result = upper("hello")
 ConfigFile(Body(
   Attribute(
     Identifier,
+    AssignOp,
     Expression(
       FunctionCall(
-        Identifier,
+        FunctionName(Identifier),
         FunctionArguments(
           Expression(
             LiteralValue(
@@ -27,11 +28,13 @@ result = provider::function("arg")
 ConfigFile(Body(
   Attribute(
     Identifier,
+    AssignOp,
     Expression(
       FunctionCall(
-        Identifier,
-        NamespaceSeparator,
-        Identifier,
+        FunctionNamespace(
+          Identifier,
+          NamespaceSeparator),
+        FunctionName(Identifier),
         FunctionArguments(
           Expression(
             LiteralValue(
@@ -49,13 +52,16 @@ result = provider::time::rfc3339_parse("2023-07-25T23:43:16Z")
 ConfigFile(Body(
   Attribute(
     Identifier,
+    AssignOp,
     Expression(
       FunctionCall(
-        Identifier,
-        NamespaceSeparator,
-        Identifier,
-        NamespaceSeparator,
-        Identifier,
+        FunctionNamespace(
+          Identifier,
+          NamespaceSeparator),
+        FunctionNamespace(
+          Identifier,
+          NamespaceSeparator),
+        FunctionName(Identifier),
         FunctionArguments(
           Expression(
             LiteralValue(
@@ -73,11 +79,13 @@ result = provider :: function()
 ConfigFile(Body(
   Attribute(
     Identifier,
+    AssignOp,
     Expression(
       FunctionCall(
-        Identifier,
-        NamespaceSeparator,
-        Identifier)))))
+        FunctionNamespace(
+          Identifier,
+          NamespaceSeparator),
+        FunctionName(Identifier))))))
 
 # Namespaced function call in template interpolation
 
@@ -88,6 +96,7 @@ result = "${provider::function(var.input)}"
 ConfigFile(Body(
   Attribute(
     Identifier,
+    AssignOp,
     Expression(
       TemplateExpr(
         QuotedTemplate(
@@ -96,13 +105,14 @@ ConfigFile(Body(
             TemplateInterpolationStart,
             Expression(
               FunctionCall(
-                Identifier,
-                NamespaceSeparator,
-                Identifier,
+                FunctionNamespace(
+                  Identifier,
+                  NamespaceSeparator),
+                FunctionName(Identifier),
                 FunctionArguments(
                   Expression(
                     VariableExpr(Identifier),
-                    GetAttr(Identifier))))),
+                    GetAttr(DerefOp,Identifier))))),
             TemplateInterpolationEnd),
           QuotedTemplateEnd))))))
 
@@ -115,9 +125,11 @@ result = provider::function
 ConfigFile(Body(
   Attribute(
     Identifier,
+    AssignOp,
     Expression(
       FunctionCall(
-        Identifier,
-        NamespaceSeparator,
-        Identifier,
+        FunctionNamespace(
+          Identifier,
+          NamespaceSeparator),
+        FunctionName(Identifier),
         ⚠)))))

@@ -9,191 +9,109 @@ for6 = [ for v in x : v if v < 3 ]
 
 ==>
 
-ConfigFile(Body(
-Attribute(
-  Identifier
-  Expression(
-    ForExpr(
-      ForObjectExpr(
-        ForIntro(
-          for
-          Identifier
-          Identifier
-          in
-          Expression(
-            CollectionValue(Tuple(
-                Expression(LiteralValue(StringLit(QuotedTemplateStart,TemplateLiteral,QuotedTemplateEnd)))
-                Expression(LiteralValue(StringLit(QuotedTemplateStart,TemplateLiteral,QuotedTemplateEnd)))
-                Expression(LiteralValue(StringLit(QuotedTemplateStart,TemplateLiteral,QuotedTemplateEnd)))
-              )
-            )
-          )
-        )
-        Expression(VariableExpr(Identifier))
-        Expression(VariableExpr(Identifier))
-        Ellipsis
-      )
-    )
-  )
-),
-Attribute(
-  Identifier
-  Expression(
-    ForExpr(
-      ForTupleExpr(
-        ForIntro(
-          for
-          Identifier
-          Identifier
-          in
-          Expression(VariableExpr(Identifier))
-        )
-        Expression(
-          TemplateExpr(
-            QuotedTemplate(
-              QuotedTemplateStart
-              TemplateInterpolation(
-                TemplateInterpolationStart
-                Expression(VariableExpr(Identifier))
-                TemplateInterpolationEnd
-              )
-              TemplateLiteral
-              TemplateInterpolation(
-                TemplateInterpolationStart
-                Expression(VariableExpr(Identifier))
-                TemplateInterpolationEnd
-              )
-              QuotedTemplateEnd)))))))
-Attribute(
-  Identifier
-  Expression (
-    ForExpr (
-      ForObjectExpr (
-        ForIntro (
-          for
-          Identifier
-          Identifier
-          in
-          Expression (
-            VariableExpr (
-                Identifier
-            )
-          )
-        )
-        Expression (
-          VariableExpr (
-            Identifier
-          )
-        )
-        Expression (
-          VariableExpr (
-            Identifier
-          )
-        )
-        ForCond (
-          if
-          Expression (
-            Operation (
-              BinaryOperation (
-                VariableExpr (
-                  Identifier
+ConfigFile(
+  Body(
+    Attribute(
+      Identifier,
+      AssignOp,
+      Expression(
+        ForExpr(
+          ForObjectExpr(
+            ForIntro(
+              for,
+              Identifier,
+              Comma,
+              Identifier,
+              in,
+              Expression(
+                CollectionValue(
+                  Tuple(
+                    Expression(LiteralValue(StringLit(QuotedTemplateStart,TemplateLiteral,QuotedTemplateEnd))),
+                    Comma,
+                    Expression(LiteralValue(StringLit(QuotedTemplateStart,TemplateLiteral,QuotedTemplateEnd))),
+                    Comma,
+                    Expression(LiteralValue(StringLit(QuotedTemplateStart,TemplateLiteral,QuotedTemplateEnd)))
+                  )
                 )
-                CompareOp
-                LiteralValue (
-                    NumericLit
+              ),
+              Colon
+            ),
+            Expression(VariableExpr(Identifier)),
+            Arrow,
+            Expression(VariableExpr(Identifier)),
+            Ellipsis
+          )
+        )
+      )
+    ),
+    Attribute(
+      Identifier,
+      AssignOp,
+      Expression(
+        ForExpr(
+          ForTupleExpr(
+            ForIntro(for,Identifier,Comma,Identifier,in,Expression(VariableExpr(Identifier)),Colon),
+            Expression(
+              TemplateExpr(
+                QuotedTemplate(
+                  QuotedTemplateStart,
+                  TemplateInterpolation(TemplateInterpolationStart,Expression(VariableExpr(Identifier)),TemplateInterpolationEnd),
+                  TemplateLiteral,
+                  TemplateInterpolation(TemplateInterpolationStart,Expression(VariableExpr(Identifier)),TemplateInterpolationEnd),
+                  QuotedTemplateEnd
                 )
               )
             )
           )
         )
       )
-    )
-  )
-),
-Attribute(
-  Identifier
-  Expression (
-    ForExpr (
-      ForTupleExpr (
-        ForIntro (
-          for
-          Identifier
-          in
-          Expression (
-            VariableExpr (
-                Identifier
-            )
+    ),
+    Attribute(
+      Identifier,
+      AssignOp,
+      Expression(
+        ForExpr(
+          ForObjectExpr(
+            ForIntro(for,Identifier,Comma,Identifier,in,Expression(VariableExpr(Identifier)),Colon),
+            Expression(VariableExpr(Identifier)),
+            Arrow,
+            Expression(VariableExpr(Identifier)),
+            ForCond(if,Expression(Operation(BinaryOperation(VariableExpr(Identifier),CompareOp,LiteralValue(NumericLit)))))
           )
         )
-        Expression (
-          VariableExpr (
-            Identifier
+      )
+    ),
+    Attribute(
+      Identifier,
+      AssignOp,
+      Expression(ForExpr(ForTupleExpr(ForIntro(for,Identifier,in,Expression(VariableExpr(Identifier)),Colon),Expression(VariableExpr(Identifier)))))
+    ),
+    Attribute(
+      Identifier,
+      AssignOp,
+      Expression(
+        ForExpr(
+          ForObjectExpr(
+            ForIntro(for,Identifier,in,Expression(VariableExpr(Identifier)),Colon),
+            Expression(VariableExpr(Identifier)),
+            Arrow,
+            Expression(VariableExpr(Identifier))
+          )
+        )
+      )
+    ),
+    Attribute(
+      Identifier,
+      AssignOp,
+      Expression(
+        ForExpr(
+          ForTupleExpr(
+            ForIntro(for,Identifier,in,Expression(VariableExpr(Identifier)),Colon),
+            Expression(VariableExpr(Identifier)),
+            ForCond(if,Expression(Operation(BinaryOperation(VariableExpr(Identifier),CompareOp,LiteralValue(NumericLit)))))
           )
         )
       )
     )
   )
-),
-Attribute(
-  Identifier
-  Expression (
-    ForExpr (
-      ForObjectExpr (
-        ForIntro (
-          for
-          Identifier
-          in
-          Expression (
-            VariableExpr (
-                Identifier
-            )
-          )
-        )
-        Expression (
-          VariableExpr (
-            Identifier
-          )
-        )
-        Expression (
-          VariableExpr (
-            Identifier
-          )
-        )
-      )
-    )
-  )
-),
-
-Attribute(
-  Identifier
-  Expression (
-    ForExpr (
-      ForTupleExpr (
-        ForIntro (
-          for
-          Identifier
-          in
-          Expression(VariableExpr(Identifier))
-        )
-        Expression(VariableExpr(Identifier))
-        ForCond (
-          if
-          Expression (
-            Operation (
-              BinaryOperation (
-                VariableExpr (
-                  Identifier
-                )
-                CompareOp
-                LiteralValue (
-                    NumericLit
-                )
-              )
-            )
-          )
-        )
-      )
-    )
-  )
-),
-))
+)

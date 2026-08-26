@@ -7,6 +7,9 @@ export const hclHighlight = styleTags({
   "ObjectKey/Expression/VariableExpr/Identifier": t.definition(
     t.propertyName,
   ),
+  "ObjectKey/Expression/LiteralValue/StringLit!": t.definition(
+    t.propertyName,
+  ),
   "ForIntro/Identifier TemplateForStart/Identifier": t.definition(
     t.variableName,
   ),
